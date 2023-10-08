@@ -40,7 +40,7 @@ public class EventController {
             return "events/create";
         }
         EventData.add(newEvent);
-        return "redirect:";
+        return "redirect: ";
     }
 
     @GetMapping("delete")
