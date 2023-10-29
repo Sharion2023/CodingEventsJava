@@ -5,6 +5,7 @@ import org.launchcode.codingevents.data.EventCategoryRespository;
 
 import org.launchcode.codingevents.models.EventCategory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -25,7 +26,7 @@ public class EventCategoryController {
         return "eventCategories/index";
     }
 
-    @GetMapping("/create")
+    @GetMapping("create")
     public String renderCreateEventCategoryForm(Model model){
     model.addAttribute("title", "Event Category");
     model.addAttribute(new EventCategory());
@@ -40,6 +41,23 @@ public class EventCategoryController {
             return "eventCategories/create";
         }
         eventCategoryRepository.save(eventCategory);
+        return "redirect:/eventCategories";
+    }
+
+    @GetMapping("delete")
+    public String renderDeleteEventCategoryForm(Model model){
+        model.addAttribute("title", "Delete event category");
+        model.addAttribute("eventCategories", eventCategoryRepository.findAll());
+        return "eventCategories/delete";
+    }
+
+    @PostMapping("delete")
+    public String processDeleteEventCategoryForm(@RequestParam(required = false) int[] eventCategoryIds) {
+        if(eventCategoryIds != null) {
+            for(int id : eventCategoryIds) {
+                eventCategoryRepository.deleteById(id);
+            }
+        }
         return "redirect:/eventCategories";
     }
 }
